@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+
 
 
 
@@ -65,68 +68,80 @@ class _NewTransactionState extends State<NewTransaction> {
 
     @override
     Widget build(BuildContext context) {
-      return  Card(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    decoration: InputDecoration(labelText: "Title"),
-                    controller: _titleController,
-                    onSubmitted:(_)=>_submitData ,
-                   
-                    //onChanged: (val)
-                      
-                      //titleInput=val;
-                   
-                    
-                  ),
-                  TextField(
-                    decoration: InputDecoration(labelText: "Amount"),
-                    
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    onSubmitted:(_)=>_submitData ,
-                    //onChanged: (val)
-                       //amountInput=val;
-                    
-                  ),
-                  
-                  Container(
-                    height: 70,
-                    child: Row(
-                      
-                      children: [
-                        Expanded(
-                              child: Text(_selectDate== null ? "no date choosen"
-                          :"Picked Date:${DateFormat.yMd().format(_selectDate)}",
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: _presentDatePicker,
+      return  SingleChildScrollView(
+              child: Card(
+                child: Container(
+                  padding: EdgeInsets.only(top:10, left:10,right:10,bottom:MediaQuery.of(context).viewInsets.bottom +10), // space taken by the bottom keyboard
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(labelText: "Title"),
+                        controller: _titleController,
+                        onSubmitted:(_)=>_submitData ,
+                       
+                        //onChanged: (val)
+                          
+                          //titleInput=val;
+                       
                         
-                          textColor: Theme.of(context).primaryColor,
-                          child: Text("Choose Date",
-                           style:TextStyle(
-                              fontWeight: FontWeight.bold
+                      ),
+                      TextField(
+                        decoration: InputDecoration(labelText: "Amount"),
+                        
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        onSubmitted:(_)=>_submitData ,
+                        //onChanged: (val)
+                           //amountInput=val;
+                        
+                      ),
+                      
+                      Container(
+                        height: 70,
+                        child: Row(
+                          
+                          children: [
+                            Expanded(
+                                  child: Text(_selectDate== null ? "no date choosen"
+                              :"Picked Date:${DateFormat.yMd().format(_selectDate)}",
+                              ),
                             ),
-                          ),
-                           
+                        Platform.isIOS
+                        ?CupertinoButton(
+                          child:Text("Choose Date",
+                               style:TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ), 
+                          onPressed:  _presentDatePicker,
                           )
+                        :FlatButton(
+                              onPressed: _presentDatePicker,
+                            
+                              textColor: Theme.of(context).primaryColor,
+                              child: Text("Choose Date",
+                               style:TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                               
+                              )
     
-                      ],
-                    ),
-                  ),
+                          ],
+                        ),
+                      ),
 
-                   RaisedButton(
-                    onPressed: _submitData,
-                    child: Text("Add Transaction"),
-                    textColor: Colors.pink,
+                       RaisedButton(
+                        onPressed: _submitData,
+                        child: Text("Add Transaction"),
+                        textColor: Colors.pink,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          );
+      );
+      
     }
 }
